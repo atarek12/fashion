@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { canvas } from "../../canvas";
+import { TSize } from "../../canvas/helpers";
 
 interface ImagePreviewProps {
   file: File;
-  maxSize: { width: number; height: number };
+  maxSize: TSize;
 }
 
 const ImagePreview: React.FC<ImagePreviewProps> = ({ file, maxSize }) => {
