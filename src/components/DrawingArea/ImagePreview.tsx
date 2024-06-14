@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { canvas } from "../../canvas";
 
 interface ImagePreviewProps {
@@ -7,9 +7,13 @@ interface ImagePreviewProps {
 }
 
 const ImagePreview: React.FC<ImagePreviewProps> = ({ file, maxSize }) => {
+  const isLoadedRef = useRef(false);
   useEffect(() => {
     canvas.init("canvas");
-    canvas.loadImage(file, maxSize);
+    if (!isLoadedRef.current) {
+      isLoadedRef.current = true;
+      canvas.loadImage(file, maxSize);
+    }
     return () => {
       canvas.dispose();
     };
