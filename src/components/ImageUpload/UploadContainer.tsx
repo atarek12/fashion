@@ -10,11 +10,12 @@ const UploadContainer = forwardRef<HTMLDivElement, UploadContainerProps>(
     return (
       <Stack
         ref={ref}
+        w="100%"
+        h="100%"
         position="relative"
         align="center"
         justify="center"
         direction="row"
-        padding="16px 100px"
         border="1px dashed"
         borderColor="brand.300"
         borderRadius="12px"

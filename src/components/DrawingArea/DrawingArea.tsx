@@ -9,8 +9,8 @@ const DrawingArea: React.FC<DrawingAreaProps> = ({}) => {
   const [file, setFile] = useState<File>();
 
   return (
-    <Box as="section" h="calc(100vh - 72px)">
-      <Container maxW="1200px" h="100%">
+    <Box as="section" h="calc(100vh - 200px)">
+      <Container maxW="1200px" h="100%" mt="80px">
         <Flex justify="center" align="center" h="100%">
           {file ? (
             <ImagePreview file={file} />
