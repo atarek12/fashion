@@ -1,18 +1,17 @@
 import {
   Slider as ChakraSlider,
+  SliderProps as ChakraSliderProps,
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
 } from "@chakra-ui/react";
 import React from "react";
 
-interface SliderProps {
-  onChange?: (value: number) => void;
-}
+interface SliderProps extends ChakraSliderProps {}
 
-const Slider: React.FC<SliderProps> = ({ onChange }) => {
+const Slider: React.FC<SliderProps> = ({ ...rest }) => {
   return (
-    <ChakraSlider w={200} defaultValue={50} onChangeEnd={onChange}>
+    <ChakraSlider w={200} {...rest}>
       <SliderTrack>
         <SliderFilledTrack />
       </SliderTrack>

@@ -1,5 +1,11 @@
 import { fabric } from "fabric";
-import { TSize, getCanvasSize, getImageSize } from "./helpers";
+import {
+  TBrushSettings,
+  TSize,
+  getCanvasSize,
+  getImageSize,
+  updateColor,
+} from "./helpers";
 
 export const canvas = (function () {
   let canvas: fabric.Canvas | null = null;
@@ -49,6 +55,32 @@ export const canvas = (function () {
           };
         };
         reader.readAsDataURL(file);
+      }
+    },
+
+    enableDraw: (data: TBrushSettings) => {
+      if (canvas) {
+        const color = updateColor(data.color, data.transparency, data.softness);
+        canvas.isDrawingMode = true;
+        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+        canvas.freeDrawingBrush.width = data.size;
+        canvas.freeDrawingBrush.color = color;
+      }
+    },
+
+    disableDraw: () => {
+      if (canvas) {
+        canvas.isDrawingMode = false;
+      }
+    },
+
+    updateDraw: (data: Partial<TBrushSettings>) => {
+      if (canvas) {
+        const color =
+          data.color &&
+          updateColor(data.color, data.transparency, data.softness);
+        data.size && (canvas.freeDrawingBrush.width = data.size);
+        color && (canvas.freeDrawingBrush.color = color);
       }
     },
   };

@@ -1,3 +1,12 @@
+import Color from "color";
+
+export type TBrushSettings = {
+  color: string;
+  size: number;
+  transparency: number;
+  softness: number;
+};
+
 export type TSize = { width: number; height: number };
 export function getCanvasSize(fabricImg: fabric.Image, maxSize: TSize): TSize {
   return {
@@ -33,4 +42,17 @@ export function getImageSize(
   }
 
   return { width: newWidth, height: newHeight };
+}
+
+export function getColorSoftness(color: string): number {
+  return Math.round(Color(color).saturationl());
+}
+
+export function updateColor(
+  color: string,
+  transparency = 255,
+  softness = 0,
+): string {
+  const opacity = transparency / 255;
+  return Color(color).alpha(opacity).saturationl(softness).hexa();
 }
