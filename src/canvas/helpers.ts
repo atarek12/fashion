@@ -60,3 +60,36 @@ export function updateColor(
   const opacity = transparency / 255;
   return Color(color).alpha(opacity).saturationl(softness).hexa();
 }
+
+export function getImageData(canvas: fabric.Canvas): ImageData {
+  const context = canvas.getContext();
+  return context.getImageData(0, 0, canvas.width || 0, canvas.height || 0);
+}
+
+export function convertToBlackAndWhite(imageData: ImageData) {
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const red = data[i];
+    const green = data[i + 1];
+    const blue = data[i + 2];
+    const rgb = [red, green, blue];
+    const blackWhite = Color(rgb).isLight() ? 255 : 0;
+    data[i] = blackWhite;
+    data[i + 1] = blackWhite;
+    data[i + 2] = blackWhite;
+    data[i + 3] = 255; // Remove transparency
+  }
+  return imageData;
+}
+
+export function cloneCanvas(
+  canvas: fabric.Canvas,
+  imageData: ImageData,
+): HTMLCanvasElement {
+  const htmlCanvas = document.createElement("canvas");
+  htmlCanvas.width = canvas.width || 0;
+  htmlCanvas.height = canvas.height || 0;
+  const context = htmlCanvas.getContext("2d") as CanvasRenderingContext2D;
+  context.putImageData(imageData, 0, 0);
+  return htmlCanvas;
+}

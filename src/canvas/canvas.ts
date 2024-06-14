@@ -3,7 +3,10 @@ import {
   TBrushSettings,
   TEraserSettings,
   TSize,
+  cloneCanvas,
+  convertToBlackAndWhite,
   getCanvasSize,
+  getImageData,
   getImageSize,
   updateColor,
 } from "./helpers";
@@ -121,16 +124,21 @@ export const canvas = (function () {
      * Downloading
      */
 
-    download: () => {
+    toBlackAndWhite: () => {
       if (canvas) {
-        const dataURL = canvas.toDataURL({
-          format: "png",
-          multiplier: 2,
-        });
-        const a = document.createElement("a");
-        a.href = dataURL;
-        a.download = "mask.png";
-        a.click();
+        const imageData = getImageData(canvas);
+        const blackWhite = convertToBlackAndWhite(imageData);
+        const cloned = cloneCanvas(canvas, blackWhite);
+        return cloned;
+      }
+    },
+
+    download: (input?: HTMLCanvasElement) => {
+      if (canvas) {
+        const link = document.createElement("a");
+        link.download = "canvas.png";
+        link.href = (input || canvas).toDataURL();
+        link.click();
       }
     },
   };

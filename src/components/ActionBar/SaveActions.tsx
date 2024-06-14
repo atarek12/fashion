@@ -14,7 +14,8 @@ const SaveActions: React.FC<SaveActionsProps> = ({}) => {
   };
 
   const handleDownload = () => {
-    canvas.download();
+    const blackAndWhite = canvas.toBlackAndWhite();
+    canvas.download(blackAndWhite);
   };
 
   return (
