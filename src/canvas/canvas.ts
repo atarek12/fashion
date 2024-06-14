@@ -1,6 +1,7 @@
 import { fabric } from "fabric";
 import {
   TBrushSettings,
+  TEraserSettings,
   TSize,
   getCanvasSize,
   getImageSize,
@@ -41,7 +42,7 @@ export const canvas = (function () {
           const img = new Image();
           img.src = e.target?.result as string;
           img.onload = () => {
-            const fabricImg = new fabric.Image(img);
+            const fabricImg = new fabric.Image(img, { erasable: false });
             const canvasSize = getCanvasSize(fabricImg, maxSize);
             const imageSize = getImageSize(fabricImg, canvasSize);
             fabricImg.scaleToWidth(imageSize.width);
@@ -58,13 +59,9 @@ export const canvas = (function () {
       }
     },
 
-    enableDraw: (data: TBrushSettings) => {
+    enableDraw: () => {
       if (canvas) {
-        const color = updateColor(data.color, data.transparency, data.softness);
         canvas.isDrawingMode = true;
-        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-        canvas.freeDrawingBrush.width = data.size;
-        canvas.freeDrawingBrush.color = color;
       }
     },
 
@@ -74,13 +71,37 @@ export const canvas = (function () {
       }
     },
 
-    updateDraw: (data: Partial<TBrushSettings>) => {
+    enableBrush: (data: TBrushSettings) => {
+      if (canvas) {
+        const color = updateColor(data.color, data.transparency, data.softness);
+        canvas.isDrawingMode = true;
+        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+        canvas.freeDrawingBrush.width = data.size;
+        canvas.freeDrawingBrush.color = color;
+      }
+    },
+
+    updateBrush: (data: Partial<TBrushSettings>) => {
       if (canvas) {
         const color =
           data.color &&
           updateColor(data.color, data.transparency, data.softness);
         data.size && (canvas.freeDrawingBrush.width = data.size);
         color && (canvas.freeDrawingBrush.color = color);
+      }
+    },
+
+    enableEraser: (data: TEraserSettings) => {
+      if (canvas) {
+        canvas.isDrawingMode = true;
+        canvas.freeDrawingBrush = new fabric.EraserBrush(canvas);
+        canvas.freeDrawingBrush.width = data.size;
+      }
+    },
+
+    updateEraser: (data: Partial<TEraserSettings>) => {
+      if (canvas) {
+        data.size && (canvas.freeDrawingBrush.width = data.size);
       }
     },
   };

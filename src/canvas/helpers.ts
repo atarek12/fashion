@@ -7,6 +7,10 @@ export type TBrushSettings = {
   softness: number;
 };
 
+export type TEraserSettings = {
+  size: number;
+};
+
 export type TSize = { width: number; height: number };
 export function getCanvasSize(fabricImg: fabric.Image, maxSize: TSize): TSize {
   return {

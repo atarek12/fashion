@@ -33,15 +33,14 @@ export const DrawButton: React.FC<DrawButtonProps> = ({
   const [values, setValues] = React.useState(DefaultValues);
 
   const onClick = () => {
-    if (!isOpen) canvas.enableDraw(DefaultValues);
-    else canvas.disableDraw();
+    if (!isOpen) canvas.enableBrush(DefaultValues);
     onToggle();
   };
 
   const onChange = ({ name, value }: TChangeEvent) => {
     setValues((prev) => {
       const updatedValues = { ...prev, [name]: value };
-      canvas.updateDraw(updatedValues);
+      canvas.updateBrush(updatedValues);
       return updatedValues;
     });
   };

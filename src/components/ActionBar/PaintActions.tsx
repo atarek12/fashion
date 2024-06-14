@@ -3,32 +3,36 @@ import React, { useState } from "react";
 import { DrawButton } from "./DrawButton";
 import { EraseButton } from "./EraseButton";
 import { useCanvasContext } from "../../context";
+import { canvas } from "../../canvas";
 
-enum PaintActionsDrawer {
-  Draw,
-  Erase,
+enum PaintActionsEnum {
+  Draw = "Draw",
+  Erase = "Erase",
 }
 
 interface PaintActionsProps {}
 
 const PaintActions: React.FC<PaintActionsProps> = ({}) => {
   const { file } = useCanvasContext();
-  const [open, setOpen] = useState<PaintActionsDrawer>();
+  const [open, setOpen] = useState<PaintActionsEnum>();
 
-  const handleToggle = (drawer: PaintActionsDrawer) => {
-    setOpen(open === drawer ? undefined : drawer);
+  const handleToggle = (drawer: PaintActionsEnum) => {
+    const newOpen = open === drawer ? undefined : drawer;
+    setOpen(newOpen);
+    if (newOpen) canvas.enableDraw();
+    else canvas.disableDraw();
   };
 
   return (
     <ButtonGroup isDisabled={!file}>
       <DrawButton
-        isOpen={open === PaintActionsDrawer.Draw}
-        onToggle={() => handleToggle(PaintActionsDrawer.Draw)}
+        isOpen={open === PaintActionsEnum.Draw}
+        onToggle={() => handleToggle(PaintActionsEnum.Draw)}
         onClose={() => setOpen(undefined)}
       />
       <EraseButton
-        isOpen={open === PaintActionsDrawer.Erase}
-        onToggle={() => handleToggle(PaintActionsDrawer.Erase)}
+        isOpen={open === PaintActionsEnum.Erase}
+        onToggle={() => handleToggle(PaintActionsEnum.Erase)}
         onClose={() => setOpen(undefined)}
       />
     </ButtonGroup>
