@@ -1,16 +1,25 @@
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import React from "react";
 import { MdDownload, MdSave, MdClear } from "react-icons/md";
+import { canvas } from "../../canvas";
+import { useCanvasContext } from "../../context";
 
 interface SaveActionsProps {}
 
 const SaveActions: React.FC<SaveActionsProps> = ({}) => {
+  const { file, setFile } = useCanvasContext();
+  const handleClear = () => {
+    canvas.dispose();
+    setFile(null);
+  };
+
   return (
-    <ButtonGroup>
+    <ButtonGroup isDisabled={!file}>
       <Button
         variant="outline"
         colorScheme="red"
         leftIcon={<MdClear size={24} />}
+        onClick={handleClear}
       >
         Clear
       </Button>
@@ -18,7 +27,7 @@ const SaveActions: React.FC<SaveActionsProps> = ({}) => {
         Save
       </Button>
       <Button colorScheme="cyan" leftIcon={<MdDownload size={24} />}>
-        Downlowd
+        Download
       </Button>
     </ButtonGroup>
   );

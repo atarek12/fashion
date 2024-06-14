@@ -1,13 +1,14 @@
 import { Box, Container, Flex } from "@chakra-ui/react";
 import { useSize } from "@chakra-ui/react-use-size";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { ImageUpload } from "../ImageUpload";
 import { ImagePreview } from "./ImagePreview";
+import { useCanvasContext } from "../../context";
 
 interface DrawingAreaProps {}
 
 const DrawingArea: React.FC<DrawingAreaProps> = ({}) => {
-  const [file, setFile] = useState<File>();
+  const { file, setFile } = useCanvasContext();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const wrapperSize = useSize(wrapperRef);
 

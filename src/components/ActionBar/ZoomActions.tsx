@@ -2,12 +2,15 @@ import { ButtonGroup, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { MdZoomIn, MdZoomOut } from "react-icons/md";
 import { TbZoomReset } from "react-icons/tb";
+import { useCanvasContext } from "../../context";
 
 interface ZoomActionsProps {}
 
 const ZoomActions: React.FC<ZoomActionsProps> = ({}) => {
+  const { file } = useCanvasContext();
+
   return (
-    <ButtonGroup isAttached variant="outline">
+    <ButtonGroup isAttached variant="outline" isDisabled={!file}>
       <IconButton
         title="Zoom In"
         aria-label="Zoom In"

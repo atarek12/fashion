@@ -2,6 +2,7 @@ import { ButtonGroup } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { DrawButton } from "./DrawButton";
 import { EraseButton } from "./EraseButton";
+import { useCanvasContext } from "../../context";
 
 enum PaintActionsDrawer {
   Draw,
@@ -11,6 +12,7 @@ enum PaintActionsDrawer {
 interface PaintActionsProps {}
 
 const PaintActions: React.FC<PaintActionsProps> = ({}) => {
+  const { file } = useCanvasContext();
   const [open, setOpen] = useState<PaintActionsDrawer>();
 
   const handleToggle = (drawer: PaintActionsDrawer) => {
@@ -18,7 +20,7 @@ const PaintActions: React.FC<PaintActionsProps> = ({}) => {
   };
 
   return (
-    <ButtonGroup>
+    <ButtonGroup isDisabled={!file}>
       <DrawButton
         isOpen={open === PaintActionsDrawer.Draw}
         onToggle={() => handleToggle(PaintActionsDrawer.Draw)}
