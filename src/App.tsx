@@ -1,10 +1,11 @@
-import { Box, Container } from "@chakra-ui/react";
-import { ActionBar } from "./components";
+import { Box } from "@chakra-ui/react";
+import { ActionBar, DrawingArea } from "./components";
 
 function App() {
   return (
-    <Box as="main" h="100vh" bg="ButtonFace">
+    <Box as="main" minH="100vh" bg="ButtonFace">
       <ActionBar />
+      <DrawingArea />
     </Box>
   );
 }
