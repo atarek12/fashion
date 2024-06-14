@@ -42,6 +42,14 @@ export const DrawButton: React.FC<DrawButtonProps> = ({
             <Text>Size</Text>
             <Slider />
           </Stack>
+          <Stack>
+            <Text>Softness</Text>
+            <Slider />
+          </Stack>
+          <Stack>
+            <Text>Transparency</Text>
+            <Slider />
+          </Stack>
         </Flex>
       </Drawer>
     </div>

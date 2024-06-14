@@ -32,14 +32,6 @@ export const EraseButton: React.FC<EraseButtonProps> = ({
             <Text>Size</Text>
             <Slider />
           </Stack>
-          <Stack>
-            <Text>Softness</Text>
-            <Slider />
-          </Stack>
-          <Stack>
-            <Text>Transparency</Text>
-            <Slider />
-          </Stack>
         </Flex>
       </Drawer>
     </div>
