@@ -35,6 +35,10 @@ export const canvas = (function () {
       }
     },
 
+    /**
+     * Image Loading
+     */
+
     loadImage: (file: File, maxSize: TSize) => {
       if (canvas) {
         const reader = new FileReader();
@@ -59,6 +63,10 @@ export const canvas = (function () {
       }
     },
 
+    /**
+     * Drawer Settings
+     */
+
     enableDraw: () => {
       if (canvas) {
         canvas.isDrawingMode = true;
@@ -81,6 +89,10 @@ export const canvas = (function () {
       }
     },
 
+    /**
+     * Eraser Settings
+     */
+
     updateBrush: (data: Partial<TBrushSettings>) => {
       if (canvas) {
         const color =
@@ -102,6 +114,23 @@ export const canvas = (function () {
     updateEraser: (data: Partial<TEraserSettings>) => {
       if (canvas) {
         data.size && (canvas.freeDrawingBrush.width = data.size);
+      }
+    },
+
+    /**
+     * Downloading
+     */
+
+    download: () => {
+      if (canvas) {
+        const dataURL = canvas.toDataURL({
+          format: "png",
+          multiplier: 2,
+        });
+        const a = document.createElement("a");
+        a.href = dataURL;
+        a.download = "mask.png";
+        a.click();
       }
     },
   };

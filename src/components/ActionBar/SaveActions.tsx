@@ -13,6 +13,10 @@ const SaveActions: React.FC<SaveActionsProps> = ({}) => {
     setFile(null);
   };
 
+  const handleDownload = () => {
+    canvas.download();
+  };
+
   return (
     <ButtonGroup isDisabled={!file}>
       <Button
@@ -26,7 +30,11 @@ const SaveActions: React.FC<SaveActionsProps> = ({}) => {
       <Button colorScheme="teal" leftIcon={<MdSave size={24} />}>
         Save
       </Button>
-      <Button colorScheme="cyan" leftIcon={<MdDownload size={24} />}>
+      <Button
+        colorScheme="cyan"
+        leftIcon={<MdDownload size={24} />}
+        onClick={handleDownload}
+      >
         Download
       </Button>
     </ButtonGroup>
