@@ -1,5 +1,5 @@
 import { Button, ButtonGroup } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { MdDownload, MdSave, MdClear } from "react-icons/md";
 import { canvas } from "../../canvas";
 import { useCanvasContext } from "../../context";
@@ -17,6 +17,19 @@ const SaveActions: React.FC<SaveActionsProps> = ({}) => {
     const blackAndWhite = canvas.toBlackAndWhite();
     canvas.download(blackAndWhite);
   };
+
+  useEffect(() => {
+    const listener = (e: KeyboardEvent) => {
+      e.preventDefault();
+      if (e.ctrlKey && e.key === "s") {
+        handleDownload();
+      }
+    };
+    window.addEventListener("keydown", listener);
+    return () => {
+      window.removeEventListener("keydown", listener);
+    };
+  }, []);
 
   return (
     <ButtonGroup isDisabled={!file}>

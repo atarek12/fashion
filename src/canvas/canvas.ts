@@ -139,6 +139,7 @@ export const canvas = (function () {
         link.download = "canvas.png";
         link.href = (input || canvas).toDataURL();
         link.click();
+        input?.remove();
       }
     },
   };
