@@ -33,6 +33,7 @@ yarn dev
 - Controlling brush color and size
 - Eraser to erase brush lines
 - Controlling eraser size
+- Select and remove path element by pressing DELETE or BACKSPACE
 - Zoom in and out by buttons and scroll wheel
 - Pan and drag-n-drop image
 - Undo/Redo by buttons and CTRL+Z and CTRL+Y respectively
