@@ -12,14 +12,6 @@ import {
   updateColor,
 } from "./helpers";
 
-interface IDraggingCanvas extends fabric.Canvas {
-  isDragging: boolean;
-  prevDrawingMode: boolean;
-  wasCtrlPressed: boolean;
-  lastPosX: number;
-  lastPosY: number;
-}
-
 export const canvas = (function () {
   let canvas: fabric.Canvas | null = null;
 
@@ -193,48 +185,50 @@ export const canvas = (function () {
      */
 
     beforeDrag: (e: KeyboardEvent) => {
-      const tempCanvas = canvas as IDraggingCanvas;
+      if (!canvas) return;
       if (e.ctrlKey) {
-        if (!tempCanvas.wasCtrlPressed) {
-          tempCanvas.prevDrawingMode = !!tempCanvas.isDrawingMode;
+        if (!canvas.wasCtrlPressed) {
+          canvas.prevDrawingMode = !!canvas.isDrawingMode;
         }
-        tempCanvas.isDrawingMode = false;
-        tempCanvas.wasCtrlPressed = true;
+        canvas.isDrawingMode = false;
+        canvas.wasCtrlPressed = true;
       } else {
-        if (tempCanvas.wasCtrlPressed) {
-          tempCanvas.isDrawingMode = tempCanvas.prevDrawingMode;
+        if (canvas.wasCtrlPressed) {
+          canvas.isDrawingMode = canvas.prevDrawingMode;
         }
-        tempCanvas.wasCtrlPressed = false;
+        canvas.wasCtrlPressed = false;
       }
     },
 
     enableDrag: () => {
       if (!canvas) return;
-      const tempCanvas = canvas as IDraggingCanvas;
       canvas.on("mouse:down", function (opt) {
+        if (!canvas) return;
         const evt = opt.e;
         if (evt.ctrlKey === true) {
-          tempCanvas.isDragging = true;
-          tempCanvas.selection = false;
-          tempCanvas.lastPosX = evt.clientX;
-          tempCanvas.lastPosY = evt.clientY;
+          canvas.isDragging = true;
+          canvas.selection = false;
+          canvas.lastPosX = evt.clientX;
+          canvas.lastPosY = evt.clientY;
         }
       });
       canvas.on("mouse:move", function (opt) {
-        if (tempCanvas.isDragging) {
+        if (!canvas) return;
+        if (canvas.isDragging) {
           const e = opt.e;
-          const vpt = tempCanvas.viewportTransform!;
-          vpt[4] += e.clientX - tempCanvas.lastPosX;
-          vpt[5] += e.clientY - tempCanvas.lastPosY;
-          tempCanvas.requestRenderAll();
-          tempCanvas.lastPosX = e.clientX;
-          tempCanvas.lastPosY = e.clientY;
+          const vpt = canvas.viewportTransform!;
+          vpt[4] += e.clientX - canvas.lastPosX;
+          vpt[5] += e.clientY - canvas.lastPosY;
+          canvas.requestRenderAll();
+          canvas.lastPosX = e.clientX;
+          canvas.lastPosY = e.clientY;
         }
       });
       canvas.on("mouse:up", function () {
-        tempCanvas.setViewportTransform(tempCanvas.viewportTransform!);
-        tempCanvas.isDragging = false;
-        tempCanvas.selection = true;
+        if (!canvas) return;
+        canvas.setViewportTransform(canvas.viewportTransform!);
+        canvas.isDragging = false;
+        canvas.selection = true;
       });
     },
   };

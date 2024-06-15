@@ -11,5 +11,13 @@ declare module "fabric" {
     interface IObjectOptions {
       erasable?: boolean;
     }
+
+    interface Canvas {
+      isDragging: boolean;
+      prevDrawingMode: boolean;
+      wasCtrlPressed: boolean;
+      lastPosX: number;
+      lastPosY: number;
+    }
   }
 }
