@@ -314,5 +314,30 @@ export const canvas = (function () {
         // canvas.renderAll(); // Re-render the canvas
       }
     },
+
+    /**
+     * Save
+     */
+
+    saveJson: () => {
+      if (!canvas) return;
+      const json = canvas.toJSON() as any;
+      json.width = canvas.width;
+      json.height = canvas.height;
+      return JSON.stringify(json);
+    },
+
+    loadJson: (jsonStr: string) => {
+      if (!canvas) return;
+      canvas.historyProcessing = true;
+      const json = resetImageSettings(jsonStr);
+      canvas.loadFromJSON(json, () => {
+        if (!canvas) return;
+        canvas.setWidth(json.width);
+        canvas.setHeight(json.height);
+        canvas.renderAll();
+        canvas.historyProcessing = false;
+      });
+    },
   };
 })();

@@ -2,18 +2,18 @@ import React, { useEffect, useRef } from "react";
 import { canvas } from "../../canvas";
 import { TSize } from "../../canvas/helpers";
 import { useCanvasContext } from "../../context";
-import { Box } from "@chakra-ui/react";
+import { canvasId } from "../../canvas/constant";
 
-interface ImagePreviewProps {
+interface ImageLoaderProps {
   file: File;
   maxSize: TSize;
 }
 
-const ImagePreview: React.FC<ImagePreviewProps> = ({ file, maxSize }) => {
+const ImageLoader: React.FC<ImageLoaderProps> = ({ file, maxSize }) => {
   const { setIsInitialized } = useCanvasContext();
   const isLoadedRef = useRef(false);
   useEffect(() => {
-    canvas.init("canvas");
+    canvas.init(canvasId);
     if (!isLoadedRef.current) {
       isLoadedRef.current = true;
       canvas.loadImage(file, maxSize);
@@ -24,11 +24,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ file, maxSize }) => {
     };
   }, [file, maxSize, setIsInitialized]);
 
-  return (
-    <Box border="1px dashed" borderColor="brand.300">
-      <canvas id="canvas" />;
-    </Box>
-  );
+  return null;
 };
 
-export { ImagePreview };
+export { ImageLoader };

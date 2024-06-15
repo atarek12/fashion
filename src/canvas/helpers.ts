@@ -101,11 +101,13 @@ export function getCenterPoint(canvas: fabric.Canvas) {
   };
 }
 
-export function resetImageSettings(state: string, canvas: fabric.Canvas) {
+export function resetImageSettings(state: string, canvas?: fabric.Canvas) {
   const json = JSON.parse(state);
+  const canvasWidth = canvas?.width || json.width || 0;
+  const canvasHeight = canvas?.height || json.height || 0;
   const image = json.objects[0];
   image.selectable = false;
-  image.left = (canvas.width! - image.width * image.scaleX) / 2;
-  image.top = (canvas.height! - image.height * image.scaleY) / 2;
+  image.left = (canvasWidth - image.width * image.scaleX) / 2;
+  image.top = (canvasHeight - image.height * image.scaleY) / 2;
   return json;
 }
