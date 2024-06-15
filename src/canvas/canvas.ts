@@ -300,5 +300,19 @@ export const canvas = (function () {
         });
       }
     },
+
+    /**
+     * Remove Item
+     */
+
+    removeActiveElement: () => {
+      if (!canvas) return;
+      const activeObject = canvas.getActiveObject();
+      if (activeObject) {
+        canvas.remove(activeObject);
+        canvas.discardActiveObject();
+        // canvas.renderAll(); // Re-render the canvas
+      }
+    },
   };
 })();

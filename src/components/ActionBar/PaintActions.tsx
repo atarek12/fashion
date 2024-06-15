@@ -4,6 +4,7 @@ import { DrawButton } from "./DrawButton";
 import { EraseButton } from "./EraseButton";
 import { useCanvasContext } from "../../context";
 import { canvas } from "../../canvas";
+import { RemoveButton } from "./RemoveButton";
 
 enum PaintActionsEnum {
   Draw = "Draw",
@@ -42,6 +43,7 @@ const PaintActions: React.FC<PaintActionsProps> = ({}) => {
         onToggle={() => handleToggle(PaintActionsEnum.Erase)}
         onClose={() => setOpen(undefined)}
       />
+      <RemoveButton />
     </ButtonGroup>
   );
 };

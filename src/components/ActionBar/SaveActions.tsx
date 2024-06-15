@@ -8,7 +8,7 @@ interface SaveActionsProps {}
 
 const SaveActions: React.FC<SaveActionsProps> = ({}) => {
   const { isInitialized, setFile, setIsInitialized } = useCanvasContext();
-  const handleClear = () => {
+  const handleReset = () => {
     canvas.dispose();
     setFile(null);
     setIsInitialized(false);
@@ -38,9 +38,9 @@ const SaveActions: React.FC<SaveActionsProps> = ({}) => {
         variant="outline"
         colorScheme="red"
         leftIcon={<MdClear size={24} />}
-        onClick={handleClear}
+        onClick={handleReset}
       >
-        Clear
+        Reset
       </Button>
       <Button colorScheme="teal" leftIcon={<MdSave size={24} />}>
         Save
