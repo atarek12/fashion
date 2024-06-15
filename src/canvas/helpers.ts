@@ -93,3 +93,10 @@ export function cloneCanvas(
   context.putImageData(imageData, 0, 0);
   return htmlCanvas;
 }
+
+export function getCenterPoint(canvas: fabric.Canvas) {
+  return {
+    x: (canvas.width || 0) / 2,
+    y: (canvas.height || 0) / 2,
+  };
+}

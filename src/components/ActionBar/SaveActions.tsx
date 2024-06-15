@@ -7,10 +7,11 @@ import { useCanvasContext } from "../../context";
 interface SaveActionsProps {}
 
 const SaveActions: React.FC<SaveActionsProps> = ({}) => {
-  const { file, setFile } = useCanvasContext();
+  const { isInitialized, setFile, setIsInitialized } = useCanvasContext();
   const handleClear = () => {
     canvas.dispose();
     setFile(null);
+    setIsInitialized(false);
   };
 
   const handleDownload = () => {
@@ -32,7 +33,7 @@ const SaveActions: React.FC<SaveActionsProps> = ({}) => {
   }, []);
 
   return (
-    <ButtonGroup isDisabled={!file}>
+    <ButtonGroup isDisabled={!isInitialized}>
       <Button
         variant="outline"
         colorScheme="red"

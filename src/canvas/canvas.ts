@@ -6,6 +6,7 @@ import {
   cloneCanvas,
   convertToBlackAndWhite,
   getCanvasSize,
+  getCenterPoint,
   getImageData,
   getImageSize,
   updateColor,
@@ -140,6 +141,54 @@ export const canvas = (function () {
         link.href = (input || canvas).toDataURL();
         link.click();
         input?.remove();
+      }
+    },
+
+    /**
+     * Zooming
+     */
+
+    zoomIn: () => {
+      if (canvas) {
+        const zoom = canvas.getZoom();
+        let newZoom = zoom * 1.1;
+        if (newZoom > 20) newZoom = 20;
+        const center = getCenterPoint(canvas);
+        canvas.zoomToPoint(center, newZoom);
+      }
+    },
+
+    zoomOut: () => {
+      if (canvas) {
+        const zoom = canvas.getZoom();
+        let newZoom = zoom / 1.1;
+        if (newZoom < 0.01) newZoom = 0.01;
+        const center = getCenterPoint(canvas);
+        canvas.zoomToPoint(center, newZoom);
+      }
+    },
+
+    zoomReset: () => {
+      if (canvas) {
+        const center = getCenterPoint(canvas);
+        canvas.zoomToPoint(center, 1);
+      }
+    },
+
+    wheelZoom: () => {
+      if (canvas) {
+        canvas.on("mouse:wheel", (opt) => {
+          const delta = opt.e.deltaY;
+          let zoom = canvas?.getZoom() || 1;
+          zoom *= 0.999 ** delta;
+
+          if (zoom > 20) zoom = 20;
+          if (zoom < 0.01) zoom = 0.01;
+
+          canvas?.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+          opt.e.preventDefault();
+          opt.e.stopPropagation();
+        });
       }
     },
   };

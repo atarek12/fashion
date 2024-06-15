@@ -1,30 +1,50 @@
 import { ButtonGroup, IconButton } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { MdZoomIn, MdZoomOut } from "react-icons/md";
 import { TbZoomReset } from "react-icons/tb";
 import { useCanvasContext } from "../../context";
+import { canvas } from "../../canvas";
 
 interface ZoomActionsProps {}
 
 const ZoomActions: React.FC<ZoomActionsProps> = ({}) => {
-  const { file } = useCanvasContext();
+  const { isInitialized } = useCanvasContext();
+
+  const handleZoomIn = () => {
+    canvas.zoomIn();
+  };
+
+  const handleZoomOut = () => {
+    canvas.zoomOut();
+  };
+
+  const handleZoomReset = () => {
+    canvas.zoomReset();
+  };
+
+  useEffect(() => {
+    if (isInitialized) canvas.wheelZoom();
+  }, [isInitialized]);
 
   return (
-    <ButtonGroup isAttached variant="outline" isDisabled={!file}>
+    <ButtonGroup isAttached variant="outline" isDisabled={!isInitialized}>
       <IconButton
         title="Zoom In"
         aria-label="Zoom In"
         icon={<MdZoomIn size={24} />}
+        onClick={handleZoomIn}
       />
       <IconButton
         title="Zoom Out"
         aria-label="Zoom Out"
         icon={<MdZoomOut size={24} />}
+        onClick={handleZoomOut}
       />
       <IconButton
         title="Zoom Reset"
         aria-label="Zoom Reset"
         icon={<TbZoomReset size={20} />}
+        onClick={handleZoomReset}
       />
     </ButtonGroup>
   );

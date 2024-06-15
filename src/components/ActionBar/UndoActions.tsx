@@ -6,9 +6,9 @@ import { useCanvasContext } from "../../context";
 interface UndoActionsProps {}
 
 const UndoActions: React.FC<UndoActionsProps> = ({}) => {
-  const { file } = useCanvasContext();
+  const { isInitialized } = useCanvasContext();
   return (
-    <ButtonGroup isAttached variant="outline" isDisabled={!file}>
+    <ButtonGroup isAttached variant="outline" isDisabled={!isInitialized}>
       <IconButton title="Undo" aria-label="Undo" icon={<MdUndo size={24} />} />
       <IconButton title="Redo" aria-label="Redo" icon={<MdRedo size={24} />} />
     </ButtonGroup>

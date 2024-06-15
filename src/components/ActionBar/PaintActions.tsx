@@ -13,7 +13,7 @@ enum PaintActionsEnum {
 interface PaintActionsProps {}
 
 const PaintActions: React.FC<PaintActionsProps> = ({}) => {
-  const { file } = useCanvasContext();
+  const { setIsInitialized } = useCanvasContext();
   const [open, setOpen] = useState<PaintActionsEnum>();
 
   const handleToggle = (drawer: PaintActionsEnum) => {
@@ -24,7 +24,7 @@ const PaintActions: React.FC<PaintActionsProps> = ({}) => {
   };
 
   return (
-    <ButtonGroup isDisabled={!file}>
+    <ButtonGroup isDisabled={!setIsInitialized}>
       <DrawButton
         isOpen={open === PaintActionsEnum.Draw}
         onToggle={() => handleToggle(PaintActionsEnum.Draw)}
