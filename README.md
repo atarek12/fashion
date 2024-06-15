@@ -1,30 +1,41 @@
-# React + TypeScript + Vite
+# Image Masking
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a project require by AI.Fashion, it use canvas capabilities to enable user upload an image, mask it and then download it in black and white.
 
-Currently, two official plugins are available:
+## Live version
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+You can access a live version of the app deployed to vercel: [https://image-masking.vercel.app/](https://image-masking.vercel.app/)
 
-## Expanding the ESLint configuration
+## To run the project locally
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Prerequisites
 
-- Configure the top-level `parserOptions` property like this:
+- NodeJS: install the latest version of [NodeJS](https://nodejs.org/en)
+- Yarn: run `npm i -g yarn`
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+### Getting started
+
+```bash
+yarn install
+yarn dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Libraries Used
+
+- React: UI Library for client-side-rendering
+- Chakra: react components library
+- Fabric: provide a wrapper for canvas manipulation
+
+## Features
+
+- Select a PNG/JPEG images from local device
+- Masking it by using a brush pencil
+- Controlling brush color and size
+- Eraser to erase brush lines
+- Controlling eraser size
+- Zoom in and out by buttons and scroll wheel
+- Pan and drag-n-drop image
+- Undo/Redo by buttons and CTRL+Z and CTRL+Y respectively
+- Reset the canvas and start from the scratch
+- Save the canvas continue working later by save button or CTRL+S
+- Download the image in black and white format
