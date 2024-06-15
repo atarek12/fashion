@@ -83,15 +83,6 @@ export const DrawButton: React.FC<DrawButtonProps> = ({
             />
           </Stack>
           <Stack>
-            <Text>Softness</Text>
-            <Slider
-              min={0}
-              max={100}
-              defaultValue={values.softness}
-              onChangeEnd={(value) => onChange({ name: "softness", value })}
-            />
-          </Stack>
-          <Stack>
             <Text>Transparency</Text>
             <Slider
               min={1}
