@@ -50,7 +50,10 @@ export const canvas = (function () {
           const img = new Image();
           img.src = e.target?.result as string;
           img.onload = () => {
-            const fabricImg = new fabric.Image(img, { erasable: false });
+            const fabricImg = new fabric.Image(img, {
+              erasable: false,
+              selectable: false,
+            });
             const canvasSize = getCanvasSize(fabricImg, maxSize);
             const imageSize = getImageSize(fabricImg, canvasSize);
             fabricImg.scaleToWidth(imageSize.width);
@@ -170,8 +173,8 @@ export const canvas = (function () {
 
     zoomReset: () => {
       if (canvas) {
-        const center = getCenterPoint(canvas);
-        canvas.zoomToPoint(center, 1);
+        canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+        canvas.setZoom(1);
       }
     },
 
