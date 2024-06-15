@@ -12,9 +12,9 @@ type TCanvasContext = {
 
 const context = createContext<TCanvasContext>({
   file: null,
-  setFile: (file: File | null) => {},
+  setFile: () => {},
   isInitialized: false,
-  setIsInitialized: (isInitialized: boolean) => {},
+  setIsInitialized: () => {},
   loading: true,
 });
 
