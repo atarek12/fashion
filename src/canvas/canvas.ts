@@ -35,16 +35,14 @@ export const canvas = (function () {
     },
 
     clear: () => {
-      if (canvas) {
-        canvas.clear();
-      }
+      if (!canvas) return;
+      canvas.clear();
     },
 
     dispose: () => {
-      if (canvas) {
-        canvas.dispose();
-        canvas = null;
-      }
+      if (!canvas) return;
+      canvas.dispose();
+      canvas = null;
     },
 
     /**
@@ -52,30 +50,29 @@ export const canvas = (function () {
      */
 
     loadImage: (file: File, maxSize: TSize) => {
-      if (canvas) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = new Image();
-          img.src = e.target?.result as string;
-          img.onload = () => {
-            const fabricImg = new fabric.Image(img, {
-              erasable: false,
-              selectable: false,
-            });
-            const canvasSize = getCanvasSize(fabricImg, maxSize);
-            const imageSize = getImageSize(fabricImg, canvasSize);
-            fabricImg.scaleToWidth(imageSize.width);
-            fabricImg.scaleToHeight(imageSize.height);
-            canvas?.setWidth(canvasSize.width);
-            canvas?.setHeight(canvasSize.height);
-            canvas?.add(fabricImg);
-            canvas?.centerObject(fabricImg);
-            fabricImg.setCoords();
-            canvas?.renderAll();
-          };
+      if (!canvas) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target?.result as string;
+        img.onload = () => {
+          const fabricImg = new fabric.Image(img, {
+            erasable: false,
+            selectable: false,
+          });
+          const canvasSize = getCanvasSize(fabricImg, maxSize);
+          const imageSize = getImageSize(fabricImg, canvasSize);
+          fabricImg.scaleToWidth(imageSize.width);
+          fabricImg.scaleToHeight(imageSize.height);
+          canvas?.setWidth(canvasSize.width);
+          canvas?.setHeight(canvasSize.height);
+          canvas?.add(fabricImg);
+          canvas?.centerObject(fabricImg);
+          fabricImg.setCoords();
+          canvas?.renderAll();
         };
-        reader.readAsDataURL(file);
-      }
+      };
+      reader.readAsDataURL(file);
     },
 
     /**
@@ -83,25 +80,22 @@ export const canvas = (function () {
      */
 
     enableDraw: () => {
-      if (canvas) {
-        canvas.isDrawingMode = true;
-      }
+      if (!canvas) return;
+      canvas.isDrawingMode = true;
     },
 
     disableDraw: () => {
-      if (canvas) {
-        canvas.isDrawingMode = false;
-      }
+      if (!canvas) return;
+      canvas.isDrawingMode = false;
     },
 
     enableBrush: (data: TBrushSettings) => {
-      if (canvas) {
-        const color = updateColor(data.color, data.transparency, data.softness);
-        canvas.isDrawingMode = true;
-        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-        canvas.freeDrawingBrush.width = data.size;
-        canvas.freeDrawingBrush.color = color;
-      }
+      if (!canvas) return;
+      const color = updateColor(data.color, data.transparency, data.softness);
+      canvas.isDrawingMode = true;
+      canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+      canvas.freeDrawingBrush.width = data.size;
+      canvas.freeDrawingBrush.color = color;
     },
 
     /**
@@ -109,27 +103,23 @@ export const canvas = (function () {
      */
 
     updateBrush: (data: Partial<TBrushSettings>) => {
-      if (canvas) {
-        const color =
-          data.color &&
-          updateColor(data.color, data.transparency, data.softness);
-        data.size && (canvas.freeDrawingBrush.width = data.size);
-        color && (canvas.freeDrawingBrush.color = color);
-      }
+      if (!canvas) return;
+      const color =
+        data.color && updateColor(data.color, data.transparency, data.softness);
+      data.size && (canvas.freeDrawingBrush.width = data.size);
+      color && (canvas.freeDrawingBrush.color = color);
     },
 
     enableEraser: (data: TEraserSettings) => {
-      if (canvas) {
-        canvas.isDrawingMode = true;
-        canvas.freeDrawingBrush = new fabric.EraserBrush(canvas);
-        canvas.freeDrawingBrush.width = data.size;
-      }
+      if (!canvas) return;
+      canvas.isDrawingMode = true;
+      canvas.freeDrawingBrush = new fabric.EraserBrush(canvas);
+      canvas.freeDrawingBrush.width = data.size;
     },
 
     updateEraser: (data: Partial<TEraserSettings>) => {
-      if (canvas) {
-        data.size && (canvas.freeDrawingBrush.width = data.size);
-      }
+      if (!canvas) return;
+      data.size && (canvas.freeDrawingBrush.width = data.size);
     },
 
     /**
@@ -137,22 +127,20 @@ export const canvas = (function () {
      */
 
     toBlackAndWhite: () => {
-      if (canvas) {
-        const imageData = getImageData(canvas);
-        const blackWhite = convertToBlackAndWhite(imageData);
-        const cloned = cloneCanvas(canvas, blackWhite);
-        return cloned;
-      }
+      if (!canvas) return;
+      const imageData = getImageData(canvas);
+      const blackWhite = convertToBlackAndWhite(imageData);
+      const cloned = cloneCanvas(canvas, blackWhite);
+      return cloned;
     },
 
     download: (input?: HTMLCanvasElement) => {
-      if (canvas) {
-        const link = document.createElement("a");
-        link.download = "canvas.png";
-        link.href = (input || canvas).toDataURL();
-        link.click();
-        input?.remove();
-      }
+      if (!canvas) return;
+      const link = document.createElement("a");
+      link.download = "canvas.png";
+      link.href = (input || canvas).toDataURL();
+      link.click();
+      input?.remove();
     },
 
     /**
@@ -160,23 +148,21 @@ export const canvas = (function () {
      */
 
     zoomIn: () => {
-      if (canvas) {
-        const zoom = canvas.getZoom();
-        let newZoom = zoom * 1.1;
-        if (newZoom > 20) newZoom = 20;
-        const center = getCenterPoint(canvas);
-        canvas.zoomToPoint(center, newZoom);
-      }
+      if (!canvas) return;
+      const zoom = canvas.getZoom();
+      let newZoom = zoom * 1.1;
+      if (newZoom > 20) newZoom = 20;
+      const center = getCenterPoint(canvas);
+      canvas.zoomToPoint(center, newZoom);
     },
 
     zoomOut: () => {
-      if (canvas) {
-        const zoom = canvas.getZoom();
-        let newZoom = zoom / 1.1;
-        if (newZoom < 0.01) newZoom = 0.01;
-        const center = getCenterPoint(canvas);
-        canvas.zoomToPoint(center, newZoom);
-      }
+      if (!canvas) return;
+      const zoom = canvas.getZoom();
+      let newZoom = zoom / 1.1;
+      if (newZoom < 0.01) newZoom = 0.01;
+      const center = getCenterPoint(canvas);
+      canvas.zoomToPoint(center, newZoom);
     },
 
     zoomReset: () => {
@@ -187,20 +173,19 @@ export const canvas = (function () {
     },
 
     wheelZoom: () => {
-      if (canvas) {
-        canvas.on("mouse:wheel", (opt) => {
-          const delta = opt.e.deltaY;
-          let zoom = canvas?.getZoom() || 1;
-          zoom *= 0.999 ** delta;
+      if (!canvas) return;
+      canvas.on("mouse:wheel", (opt) => {
+        const delta = opt.e.deltaY;
+        let zoom = canvas?.getZoom() || 1;
+        zoom *= 0.999 ** delta;
 
-          if (zoom > 20) zoom = 20;
-          if (zoom < 0.01) zoom = 0.01;
+        if (zoom > 20) zoom = 20;
+        if (zoom < 0.01) zoom = 0.01;
 
-          canvas?.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-          opt.e.preventDefault();
-          opt.e.stopPropagation();
-        });
-      }
+        canvas?.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+        opt.e.preventDefault();
+        opt.e.stopPropagation();
+      });
     },
 
     /**
@@ -224,34 +209,33 @@ export const canvas = (function () {
     },
 
     enableDrag: () => {
+      if (!canvas) return;
       const tempCanvas = canvas as IDraggingCanvas;
-      if (canvas) {
-        canvas.on("mouse:down", function (opt) {
-          const evt = opt.e;
-          if (evt.ctrlKey === true) {
-            tempCanvas.isDragging = true;
-            tempCanvas.selection = false;
-            tempCanvas.lastPosX = evt.clientX;
-            tempCanvas.lastPosY = evt.clientY;
-          }
-        });
-        canvas.on("mouse:move", function (opt) {
-          if (tempCanvas.isDragging) {
-            const e = opt.e;
-            const vpt = tempCanvas.viewportTransform!;
-            vpt[4] += e.clientX - tempCanvas.lastPosX;
-            vpt[5] += e.clientY - tempCanvas.lastPosY;
-            tempCanvas.requestRenderAll();
-            tempCanvas.lastPosX = e.clientX;
-            tempCanvas.lastPosY = e.clientY;
-          }
-        });
-        canvas.on("mouse:up", function () {
-          tempCanvas.setViewportTransform(tempCanvas.viewportTransform!);
-          tempCanvas.isDragging = false;
-          tempCanvas.selection = true;
-        });
-      }
+      canvas.on("mouse:down", function (opt) {
+        const evt = opt.e;
+        if (evt.ctrlKey === true) {
+          tempCanvas.isDragging = true;
+          tempCanvas.selection = false;
+          tempCanvas.lastPosX = evt.clientX;
+          tempCanvas.lastPosY = evt.clientY;
+        }
+      });
+      canvas.on("mouse:move", function (opt) {
+        if (tempCanvas.isDragging) {
+          const e = opt.e;
+          const vpt = tempCanvas.viewportTransform!;
+          vpt[4] += e.clientX - tempCanvas.lastPosX;
+          vpt[5] += e.clientY - tempCanvas.lastPosY;
+          tempCanvas.requestRenderAll();
+          tempCanvas.lastPosX = e.clientX;
+          tempCanvas.lastPosY = e.clientY;
+        }
+      });
+      canvas.on("mouse:up", function () {
+        tempCanvas.setViewportTransform(tempCanvas.viewportTransform!);
+        tempCanvas.isDragging = false;
+        tempCanvas.selection = true;
+      });
     },
   };
 })();
