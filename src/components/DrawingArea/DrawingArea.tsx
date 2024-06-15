@@ -14,7 +14,7 @@ const DrawingArea: React.FC<DrawingAreaProps> = ({}) => {
 
   return (
     <Box as="section" h="calc(100vh - 200px)">
-      <Container maxW="1200px" h="100%" mt="80px">
+      <Container maxW="1200px" h="100%" mt="100px">
         <Flex ref={wrapperRef} justify="center" align="center" h="100%">
           {file ? (
             <ImagePreview file={file} maxSize={wrapperSize!} />

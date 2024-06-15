@@ -9,6 +9,7 @@ import {
   getCenterPoint,
   getImageData,
   getImageSize,
+  resetImageSettings,
   updateColor,
 } from "./helpers";
 
@@ -19,6 +20,7 @@ export const canvas = (function () {
     init: (id: string) => {
       if (canvas) return canvas;
       canvas = new fabric.Canvas(id);
+      canvas.history = [];
       return canvas;
     },
 
@@ -28,11 +30,13 @@ export const canvas = (function () {
 
     clear: () => {
       if (!canvas) return;
+      canvas.history = [];
       canvas.clear();
     },
 
     dispose: () => {
       if (!canvas) return;
+      canvas.history = [];
       canvas.dispose();
       canvas = null;
     },
@@ -81,6 +85,10 @@ export const canvas = (function () {
       canvas.isDrawingMode = false;
     },
 
+    /**
+     * Brush Settings
+     */
+
     enableBrush: (data: TBrushSettings) => {
       if (!canvas) return;
       const color = updateColor(data.color, data.transparency, data.softness);
@@ -90,10 +98,6 @@ export const canvas = (function () {
       canvas.freeDrawingBrush.color = color;
     },
 
-    /**
-     * Eraser Settings
-     */
-
     updateBrush: (data: Partial<TBrushSettings>) => {
       if (!canvas) return;
       const color =
@@ -101,6 +105,10 @@ export const canvas = (function () {
       data.size && (canvas.freeDrawingBrush.width = data.size);
       color && (canvas.freeDrawingBrush.color = color);
     },
+
+    /**
+     * Eraser Settings
+     */
 
     enableEraser: (data: TEraserSettings) => {
       if (!canvas) return;
@@ -230,6 +238,67 @@ export const canvas = (function () {
         canvas.isDragging = false;
         canvas.selection = true;
       });
+    },
+
+    /**
+     * Undo / Redo
+     */
+
+    setupHistory: () => {
+      if (!canvas) return;
+      const pushToHistory = () => {
+        if (!canvas) return;
+        if (canvas.historyProcessing) return;
+        const json = canvas.toJSON()!;
+        const newHistory = canvas.history.slice(0, canvas.historyIndex + 1);
+        newHistory.push(JSON.stringify(json));
+        canvas.history = newHistory;
+        canvas.historyIndex = newHistory.length - 1;
+      };
+
+      canvas.on("object:added", pushToHistory);
+      canvas.on("object:modified", pushToHistory);
+      canvas.on("object:removed", pushToHistory);
+      canvas.on("object:skewing", pushToHistory);
+      canvas.on("path:created", (e: any) => {
+        // capture only events created by the eraser, not the brush
+        // brush events are captured by object:added
+        if (e.path.globalCompositeOperation === "destination-out") {
+          pushToHistory();
+        }
+      });
+    },
+
+    undo: () => {
+      if (!canvas) return;
+      if (canvas.historyIndex > 0) {
+        canvas.historyProcessing = true;
+        const newIndex = canvas.historyIndex - 1;
+        const previousState = canvas.history[newIndex];
+        const json = resetImageSettings(previousState, canvas);
+        canvas?.loadFromJSON(json, () => {
+          if (!canvas) return;
+          canvas.renderAll();
+          canvas.historyIndex = newIndex;
+          canvas.historyProcessing = false;
+        });
+      }
+    },
+
+    redo: () => {
+      if (!canvas) return;
+      if (canvas.historyIndex < canvas.history.length - 1) {
+        canvas.historyProcessing = true;
+        const newIndex = canvas.historyIndex + 1;
+        const nextState = canvas.history[newIndex];
+        const json = resetImageSettings(nextState, canvas);
+        canvas?.loadFromJSON(json, () => {
+          if (!canvas) return;
+          canvas.renderAll();
+          canvas.historyIndex = newIndex;
+          canvas.historyProcessing = false;
+        });
+      }
     },
   };
 })();

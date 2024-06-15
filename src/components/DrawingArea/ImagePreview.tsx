@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { canvas } from "../../canvas";
 import { TSize } from "../../canvas/helpers";
 import { useCanvasContext } from "../../context";
+import { Box } from "@chakra-ui/react";
 
 interface ImagePreviewProps {
   file: File;
@@ -23,7 +24,11 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ file, maxSize }) => {
     };
   }, [file, maxSize, setIsInitialized]);
 
-  return <canvas id="canvas" />;
+  return (
+    <Box border="1px dashed" borderColor="brand.300">
+      <canvas id="canvas" />;
+    </Box>
+  );
 };
 
 export { ImagePreview };

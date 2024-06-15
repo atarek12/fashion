@@ -100,3 +100,12 @@ export function getCenterPoint(canvas: fabric.Canvas) {
     y: (canvas.height || 0) / 2,
   };
 }
+
+export function resetImageSettings(state: string, canvas: fabric.Canvas) {
+  const json = JSON.parse(state);
+  const image = json.objects[0];
+  image.selectable = false;
+  image.left = (canvas.width! - image.width * image.scaleX) / 2;
+  image.top = (canvas.height! - image.height * image.scaleY) / 2;
+  return json;
+}
