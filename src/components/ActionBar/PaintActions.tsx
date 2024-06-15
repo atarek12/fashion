@@ -1,5 +1,5 @@
 import { ButtonGroup } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DrawButton } from "./DrawButton";
 import { EraseButton } from "./EraseButton";
 import { useCanvasContext } from "../../context";
@@ -13,7 +13,7 @@ enum PaintActionsEnum {
 interface PaintActionsProps {}
 
 const PaintActions: React.FC<PaintActionsProps> = ({}) => {
-  const { setIsInitialized } = useCanvasContext();
+  const { isInitialized } = useCanvasContext();
   const [open, setOpen] = useState<PaintActionsEnum>();
 
   const handleToggle = (drawer: PaintActionsEnum) => {
@@ -23,8 +23,15 @@ const PaintActions: React.FC<PaintActionsProps> = ({}) => {
     else canvas.disableDraw();
   };
 
+  useEffect(() => {
+    if (!isInitialized) {
+      canvas.disableDraw();
+      setOpen(undefined);
+    }
+  }, [isInitialized]);
+
   return (
-    <ButtonGroup isDisabled={!setIsInitialized}>
+    <ButtonGroup isDisabled={!isInitialized}>
       <DrawButton
         isOpen={open === PaintActionsEnum.Draw}
         onToggle={() => handleToggle(PaintActionsEnum.Draw)}

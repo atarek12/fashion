@@ -23,7 +23,16 @@ const ZoomActions: React.FC<ZoomActionsProps> = ({}) => {
   };
 
   useEffect(() => {
-    if (isInitialized) canvas.wheelZoom();
+    if (isInitialized) {
+      canvas.wheelZoom();
+      canvas.enableDrag();
+      document.addEventListener("keydown", canvas.beforeDrag);
+      document.addEventListener("keyup", canvas.beforeDrag);
+      return () => {
+        document.removeEventListener("keydown", canvas.beforeDrag);
+        document.removeEventListener("keyup", canvas.beforeDrag);
+      };
+    }
   }, [isInitialized]);
 
   return (

@@ -12,6 +12,14 @@ import {
   updateColor,
 } from "./helpers";
 
+interface IDraggingCanvas extends fabric.Canvas {
+  isDragging: boolean;
+  prevDrawingMode: boolean;
+  wasCtrlPressed: boolean;
+  lastPosX: number;
+  lastPosY: number;
+}
+
 export const canvas = (function () {
   let canvas: fabric.Canvas | null = null;
 
@@ -191,6 +199,57 @@ export const canvas = (function () {
           canvas?.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
           opt.e.preventDefault();
           opt.e.stopPropagation();
+        });
+      }
+    },
+
+    /**
+     * Dragging
+     */
+
+    beforeDrag: (e: KeyboardEvent) => {
+      const tempCanvas = canvas as IDraggingCanvas;
+      if (e.ctrlKey) {
+        if (!tempCanvas.wasCtrlPressed) {
+          tempCanvas.prevDrawingMode = !!tempCanvas.isDrawingMode;
+        }
+        tempCanvas.isDrawingMode = false;
+        tempCanvas.wasCtrlPressed = true;
+      } else {
+        if (tempCanvas.wasCtrlPressed) {
+          tempCanvas.isDrawingMode = tempCanvas.prevDrawingMode;
+        }
+        tempCanvas.wasCtrlPressed = false;
+      }
+    },
+
+    enableDrag: () => {
+      const tempCanvas = canvas as IDraggingCanvas;
+      if (canvas) {
+        canvas.on("mouse:down", function (opt) {
+          const evt = opt.e;
+          if (evt.ctrlKey === true) {
+            tempCanvas.isDragging = true;
+            tempCanvas.selection = false;
+            tempCanvas.lastPosX = evt.clientX;
+            tempCanvas.lastPosY = evt.clientY;
+          }
+        });
+        canvas.on("mouse:move", function (opt) {
+          if (tempCanvas.isDragging) {
+            const e = opt.e;
+            const vpt = tempCanvas.viewportTransform!;
+            vpt[4] += e.clientX - tempCanvas.lastPosX;
+            vpt[5] += e.clientY - tempCanvas.lastPosY;
+            tempCanvas.requestRenderAll();
+            tempCanvas.lastPosX = e.clientX;
+            tempCanvas.lastPosY = e.clientY;
+          }
+        });
+        canvas.on("mouse:up", function () {
+          tempCanvas.setViewportTransform(tempCanvas.viewportTransform!);
+          tempCanvas.isDragging = false;
+          tempCanvas.selection = true;
         });
       }
     },
